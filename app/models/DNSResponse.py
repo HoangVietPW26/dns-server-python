@@ -23,8 +23,8 @@ class DNSMessegeQuestion():
         self.qtype = QTYPE.to_bytes(2, 'big')
         self.qclass = QCLASS.to_bytes(2, 'big')
     
-    def get_name(self):
-        names = self.name.split(b'.')
+    def get_name(self, NAME):
+        names = NAME.split(b'.')
         for i in range(len(names)):
             names[i] = len(names[i]).to_bytes(1, 'big') + names[i]
         self.name = b''.join(names) + b'\x00'
@@ -42,8 +42,8 @@ class DNSMessegeAnswer():
         self.rdlength = RDLENGTH.to_bytes(2, 'big')
         self.rdata = RDATA.to_bytes(4, 'big')
     
-    def get_name(self):
-        names = self.name.split(b'.')
+    def get_name(self, NAME):
+        names = NAME.split(b'.')
         for i in range(len(names)):
             names[i] = len(names[i]).to_bytes(1, 'big') + names[i]
         self.name = b''.join(names) + b'\x00'
