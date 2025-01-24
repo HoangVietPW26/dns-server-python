@@ -14,10 +14,27 @@ def main():
         try:
             buf, source = udp_socket.recvfrom(512)
 
-            header = b"\x04\xd2\x80\x00\x00\x01\x00\x01" + (b"\x00")*4
-            question = b"\x0c\x63\x6F\x64\x65\x63\x72\x61\x66\x74\x65\x72\x73" + \
-                b"\x02\x69\x6F" +b"\x00" + b"\x00\x01" + b"\x00\x01"
-            answer = b"\x0ccodecrafters\x02io\x00" +b"\x00\x01" + b"\x00\x01" +b"\x00\x3c" + b"\x00\x04" + b"\x08\x08\x08\x08"
+            header = (b"\x04\xd2" +  # ID: 1234
+                      b"\x80" +      # QR=1, OPCODE=0, etc.
+                      b"\x00" +      # More flags
+                      b"\x00\x01" +  # QDCOUNT: 1 question
+                      b"\x00\x01" +  # ANCOUNT: 1 answer
+                      b"\x00\x00" +  # NSCOUNT: 0
+                      b"\x00\x00")   # ARCOUNT: 0
+
+            # Question Section
+            question = (b"\x0ccodecrafters\x02io\x00" +   # Name 
+                    b"\x00\x01" +  # Type: A record 
+                    b"\x00\x01")    # Class: IN
+
+            # Answer Section
+            answer = (b"\x0ccodecrafters\x02io\x00" +  # Name
+                    b"\x00\x01" +  # Type: A record
+                    b"\x00\x01" +  # Class: IN
+                    b"\x00\x00\x00\x3c" +  # TTL: 60
+                    b"\x00\x04" +  # Length: 4 bytes
+                    b"\x08\x08\x08\x08")  # IP: 8.8.8.8
+            
             response = header + question + answer
     
             udp_socket.sendto(response, source)
