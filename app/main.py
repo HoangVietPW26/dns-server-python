@@ -42,6 +42,7 @@ def main():
             answer = DNSMessegeAnswer("codecrafters.io", 1, 1, 60, 4, "8.8.8.8").get_answer()
             
             response = DNSResponseMessage(header, question, answer).get_response()
+            print(response)
     
             udp_socket.sendto(response, source)
         except Exception as e:
