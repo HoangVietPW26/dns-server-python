@@ -52,7 +52,7 @@ class DNSMessegeAnswer():
     def get_answer(self):
         return self.name + self.type + self.class_ + self.ttl + self.rdlength + self.rdata
 
-class DNSResponse():
+class DNSResponseMessage():
     def __init__(self, header, question, answer):
         self.header = header
         self.question = question

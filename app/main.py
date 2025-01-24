@@ -1,5 +1,5 @@
 import socket
-from DNSResponse import DNSMessegeHeader, DNSMessegeQuestion, DNSMessegeAnswer, DNSResponse
+from app.models.DNSResponse import DNSMessegeHeader, DNSMessegeQuestion, DNSMessegeAnswer, DNSResponseMessage
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -41,7 +41,7 @@ def main():
 
             answer = DNSMessegeAnswer("codecrafters.io", 1, 1, 60, 4, "8.8.8.8").get_answer()
             
-            response = DNSResponse(header, question, answer).get_response()
+            response = DNSResponseMessage(header, question, answer).get_response()
     
             udp_socket.sendto(response, source)
         except Exception as e:
