@@ -46,7 +46,7 @@ def main():
             print(header)
             print(question)
             print(answer)
-            udp_socket.sendto(b'\x04\xd2\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x01\x00\x00\x00\x00\x0ccodecrafters\x02io\x00\x00\x01\x00\x01\x0ccodecrafters\x02io\x00\x00\x01\x00\x01\x00\x00\x00\x3c\x00\x04\x08\x08\x08\x08', source)
+            udp_socket.sendto(response, source)
         except Exception as e:
             print(f"Error receiving data: {e}")
             break
