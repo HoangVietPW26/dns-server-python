@@ -59,7 +59,7 @@ def decode_dns_question(question, start=0):
         i += length + 1
     qtype = int.from_bytes(question[i+1:i+3], 'big')
     qclass = int.from_bytes(question[i+3:i+5], 'big')
-    return '.'.join(name), qtype, qclass, i+5
+    return '.'.join(name)
     
 class DNSMessegeAnswer():
     def __init__(self, NAME="codecrafters.io", TYPE=1, CLASS=1, TTL=60, RDLENGTH=4, RDATA="8.8.8.8"):
@@ -97,7 +97,7 @@ def decode_dns_answer(answer, start=0):
     ttl = int.from_bytes(answer[i+5:i+9], 'big')
     rdlength = int.from_bytes(answer[i+9:i+11], 'big')
     rdata = '.'.join(map(str, answer[i+11:i+11+rdlength]))
-    return '.'.join(name), qtype, qclass, ttl, rdlength, rdata, i+11+rdlength
+    return '.'.join(name)
 class DNSResponseMessage():
     def __init__(self, header, question, answer):
         self.header = header

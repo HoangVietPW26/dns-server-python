@@ -18,12 +18,12 @@ def main():
             header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, 1, 1, NSCOUNT, ARCOUNT).get_header()
             print(header)
             
-            (name, _qtype, _qclass, start) = decode_dns_question(buf[12:])
+            (name) = decode_dns_question(buf[12:])
             question = DNSMessegeQuestion(name, 1, 1).get_question()
             print(question)
 
             print(buf[12:])
-            (name, _type, _class, _ttl, _rdlength, _rdata) = decode_dns_answer(buf[12:], start)
+            (name) = decode_dns_answer(buf[12:])
             answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
             print(answer)
             
