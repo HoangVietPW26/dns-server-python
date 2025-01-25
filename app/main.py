@@ -18,7 +18,8 @@ def forward_single_query(resolver_socket, resolver_addr, query_id, op_code, rd, 
     print(query)
     resolver_socket.sendto(query, resolver_addr)
     response, _ = resolver_socket.recvfrom(512)
-    
+    print(response)
+    print("***")
     return response
 
 def main(resolver=":"):
