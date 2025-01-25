@@ -73,6 +73,7 @@ def decode_dns_question(question, num_of_question=1, start=12):
         names.append(('.'.join(name), qtype, qclass))
         name = []
         i += 5
+        print(question[i])
         num_of_question -= 1
     return names
 
