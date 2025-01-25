@@ -25,7 +25,8 @@ def decodeDNSHeader(header):
     RD = (flags & 0b0000000100000000) >> 8
     RA = (flags & 0b0000000010000000) >> 7
     Z = (flags & 0b0000000001111000) >> 4
-    RCODE = flags & 0b0000000000001111
+    # RCODE = flags & 0b0000000000001111
+    RCODE = 0 if OPCODE == 0 else 4
     QDCOUNT = int.from_bytes(header[4:6], 'big')
     ANCOUNT = int.from_bytes(header[6:8], 'big')
     NSCOUNT = int.from_bytes(header[8:10], 'big')
