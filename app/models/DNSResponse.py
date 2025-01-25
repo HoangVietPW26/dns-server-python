@@ -50,7 +50,7 @@ class DNSMessegeQuestion():
     def get_question(self):
         return self.name + self.qtype + self.qclass
 
-def decode_dns_question_and_answer(question, start=0):
+def decode_dns_question(question, start=0):
     name = []
     i = start
     while question[i] != 0:
@@ -85,6 +85,19 @@ class DNSMessegeAnswer():
     def get_answer(self):
         return self.name + self.type + self.class_ + self.ttl + self.rdlength + self.rdata
 
+def decode_dns_answer(answer, start=0):
+    name = []
+    i = start
+    while answer[i] != 0:
+        length = answer[i]
+        name.append(answer[i+1:i+1+length].decode("utf-8"))
+        i += length + 1
+    qtype = int.from_bytes(answer[i+1:i+3], 'big')
+    qclass = int.from_bytes(answer[i+3:i+5], 'big')
+    ttl = int.from_bytes(answer[i+5:i+9], 'big')
+    rdlength = int.from_bytes(answer[i+9:i+11], 'big')
+    rdata = '.'.join(map(str, answer[i+11:i+11+rdlength]))
+    return '.'.join(name), qtype, qclass, ttl, rdlength, rdata, i+11+rdlength
 class DNSResponseMessage():
     def __init__(self, header, question, answer):
         self.header = header
