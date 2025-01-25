@@ -54,7 +54,7 @@ def decode_dns_question(question, num_of_question=1, start=12):
     names = []
     name = []
     i = start
-    print("****")
+
     while num_of_question > 0:
         while question[i] != 0:
             print(question[i], i)
@@ -72,7 +72,7 @@ def decode_dns_question(question, num_of_question=1, start=12):
         name = []
         i += 5
         num_of_question -= 1
-    print("*****")
+
     return names
 
 def decode_compress(question, offset):
