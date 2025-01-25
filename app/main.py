@@ -13,13 +13,12 @@ def main():
         try:
             buf, source = udp_socket.recvfrom(512)
             print(buf)
-            print(buf[12:])
 
             (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
             header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, QDCOUNT, NSCOUNT, ARCOUNT).get_header()
             print(header)
             
-            (names) = decode_dns_question(buf)
+            names = decode_dns_question(buf)
             print(names)
             questions = b''
             for (name, qtype, qclass) in names:
