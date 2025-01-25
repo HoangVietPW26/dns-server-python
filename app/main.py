@@ -44,6 +44,7 @@ def main(resolver=":"):
 
             # Decode questions
             questions = decode_dns_question(buf, QDCOUNT)
+            print(questions)
             
             # Prepare response components
             response_questions = b''
