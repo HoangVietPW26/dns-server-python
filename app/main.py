@@ -22,6 +22,7 @@ def main():
             print(names)
             questions = b''
             answers = b''
+            
             for (name, qtype, qclass) in names:
                 question = DNSMessegeQuestion(name, qtype, qclass).get_question()
                 questions += question
