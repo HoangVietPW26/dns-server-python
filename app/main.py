@@ -27,11 +27,14 @@ def main(resolver=":"):
             buf, source = udp_socket.recvfrom(512)
             print(buf)
 
-            (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
-            header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, QDCOUNT, NSCOUNT, ARCOUNT).get_header()
-            print(header)
-            
 
+            # Create response header
+            (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
+            response_header = DNSMessegeHeader(
+                ID, 1, OPCODE, AA, TC, RD, RA, Z, 
+                RCODE, QDCOUNT, QDCOUNT, NSCOUNT, ARCOUNT
+            ).get_header()
+            
             # Decode questions
             questions = decode_dns_question(buf, QDCOUNT)
             print(questions)
@@ -53,12 +56,12 @@ def main(resolver=":"):
                 answer = single_response[answer_start:]  # Assuming fixed size A record answer
                 response_answers += answer
             
-            # Create response header
-            response_header = DNSMessegeHeader(
-                ID, 1, OPCODE, AA, TC, RD, 1, Z, RCODE,
-                QDCOUNT, QDCOUNT,  # Same number of answers as questions
-                0, 0
-            ).get_header()
+
+            # response_header = DNSMessegeHeader(
+            #     ID, 1, OPCODE, AA, TC, RD, 1, Z, RCODE,
+            #     QDCOUNT, QDCOUNT,  # Same number of answers as questions
+            #     0, 0
+            # ).get_header()
             
             # Combine response
             response = DNSResponseMessage(
