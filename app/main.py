@@ -21,18 +21,17 @@ def main():
             names = decode_dns_question(buf, QDCOUNT)
             print(names)
             questions = b''
+            answer = b''
             for (name, qtype, qclass) in names:
                 question = DNSMessegeQuestion(name, qtype, qclass).get_question()
                 questions += question
+                answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
+                answer += answer
             print(questions)
-
-            print(buf[12:])
-            (name) = decode_dns_answer(buf[12:])
-            answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
             print(answer)
             
 
-            response = DNSResponseMessage(header, question, answer).get_response()
+            response = DNSResponseMessage(header, questions, answers).get_response()
             udp_socket.sendto(response, source)
 
         except Exception as e:
