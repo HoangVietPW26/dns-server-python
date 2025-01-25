@@ -15,7 +15,7 @@ class DNSMessegeHeader():
     def get_header(self):
         return self.id + self.flags + self.qdcount + self.ancount + self.nscount + self.arcount
 
-def decodeDNSHeader(header):
+def decode_dns_header(header):
     ID = int.from_bytes(header[:2], 'big')
     flags = int.from_bytes(header[2:4], 'big')
     QR = (flags & 0b1000000000000000) >> 15
@@ -50,6 +50,17 @@ class DNSMessegeQuestion():
     def get_question(self):
         return self.name + self.qtype + self.qclass
 
+def decode_dns_question_and_answer(question, start=0):
+    name = []
+    i = start
+    while question[i] != 0:
+        length = question[i]
+        name.append(question[i+1:i+1+length].decode("utf-8"))
+        i += length + 1
+    qtype = int.from_bytes(question[i+1:i+3], 'big')
+    qclass = int.from_bytes(question[i+3:i+5], 'big')
+    return '.'.join(name), qtype, qclass, i+5
+    
 class DNSMessegeAnswer():
     def __init__(self, NAME="codecrafters.io", TYPE=1, CLASS=1, TTL=60, RDLENGTH=4, RDATA="8.8.8.8"):
         self.name = self.get_name(NAME)

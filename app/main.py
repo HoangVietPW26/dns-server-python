@@ -1,5 +1,5 @@
 import socket
-from app.models.DNSResponse import DNSMessegeHeader, DNSMessegeQuestion, DNSMessegeAnswer, DNSResponseMessage, decodeDNSHeader
+from app.models.DNSResponse import DNSMessegeHeader, DNSMessegeQuestion, DNSMessegeAnswer, DNSResponseMessage, decode_dns_header, decode_dns_question_and_answer
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -12,9 +12,11 @@ def main():
     while True:
         try:
             buf, source = udp_socket.recvfrom(512)
-            (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decodeDNSHeader(buf[:12])
-            header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, 1, NSCOUNT, ARCOUNT).get_header()
-            question = DNSMessegeQuestion("codecrafters.io", 1, 1).get_question()
+            (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, _QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
+            header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, 1, 1, NSCOUNT, ARCOUNT).get_header()
+            
+            (name, _qtype, _qclass, start) = decode_dns_question_and_answer(buf[12:])
+            question = DNSMessegeQuestion(name, 1, 1).get_question()
             answer = DNSMessegeAnswer("codecrafters.io", 1, 1, 60, 4, "8.8.8.8").get_answer()
             
 
