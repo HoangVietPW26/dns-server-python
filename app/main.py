@@ -21,14 +21,14 @@ def main():
             names = decode_dns_question(buf, QDCOUNT)
             print(names)
             questions = b''
-            answer = b''
+            answers = b''
             for (name, qtype, qclass) in names:
                 question = DNSMessegeQuestion(name, qtype, qclass).get_question()
                 questions += question
                 answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
                 answers += answer
             print(questions)
-            print(answer)
+            print(answers)
             
 
             response = DNSResponseMessage(header, questions, answers).get_response()
