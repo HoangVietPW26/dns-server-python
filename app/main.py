@@ -25,7 +25,7 @@ def main(resolver=":"):
     while True:
         try:
             buf, source = udp_socket.recvfrom(512)
-            print(buf)
+            print(buf, source)
 
 
             # Create response header
