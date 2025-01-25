@@ -12,6 +12,8 @@ def main():
     while True:
         try:
             buf, source = udp_socket.recvfrom(512)
+            print(buf)
+
             (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, _QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
             header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, 1, 1, NSCOUNT, ARCOUNT).get_header()
             print(header)
