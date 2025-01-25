@@ -13,7 +13,7 @@ def main():
         try:
             buf, source = udp_socket.recvfrom(512)
             (ID, QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, ANCOUNT, NSCOUNT, ARCOUNT) = decodeDNSHeader(buf[:12])
-            header = DNSMessegeHeader(ID, QR, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, ANCOUNT, NSCOUNT, ARCOUNT).get_header()
+            header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, ANCOUNT, NSCOUNT, ARCOUNT).get_header()
             question = DNSMessegeQuestion("codecrafters.io", 1, 1).get_question()
             answer = DNSMessegeAnswer("codecrafters.io", 1, 1, 60, 4, "8.8.8.8").get_answer()
             
