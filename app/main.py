@@ -21,8 +21,11 @@ def main():
             
             (names) = decode_dns_question(buf)
             print(names)
-            question = DNSMessegeQuestion(name, 1, 1).get_question()
-            print(question)
+            questions = b''
+            for (name, qtype, qclass) in names:
+                question = DNSMessegeQuestion(name, qtype, qclass).get_question()
+                questions += question
+            print(questions)
 
             print(buf[12:])
             (name) = decode_dns_answer(buf[12:])
