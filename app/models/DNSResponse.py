@@ -1,7 +1,6 @@
 class DNSMessegeHeader():
     def __init__(self, ID=0, QR=0, OPCODE=0, AA=0, TC=0, RD=0, RA=0, Z=0, RCODE=0, QDCOUNT=1, ANCOUNT=0, NSCOUNT=0, ARCOUNT=0):
         self.id = ID.to_bytes(2, 'big')
-        self.qr = QR.to_bytes(1, 'big')
         # Pack flags into two bytes
         self.flags = self.get_flags(QR, OPCODE, AA, TC, RD, RA, Z, RCODE)
         self.qdcount = QDCOUNT.to_bytes(2, 'big')
@@ -14,7 +13,7 @@ class DNSMessegeHeader():
                 (RD << 8) | (RA << 7) | (Z << 4) | RCODE
         return flags.to_bytes(2, 'big')
     def get_header(self):
-        return self.id + self.qr + self.flags + self.qdcount + self.ancount + self.nscount + self.arcount
+        return self.id + self.flags + self.qdcount + self.ancount + self.nscount + self.arcount
 
 class DNSMessegeQuestion():
     def __init__(self, NAME="codecrafters.io", QTYPE=1, QCLASS=1):
