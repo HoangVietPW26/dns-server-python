@@ -3,10 +3,10 @@ import sys
 from app.models.DNSResponse import DNSMessegeHeader, DNSMessegeQuestion, DNSMessegeAnswer, DNSResponseMessage, decode_dns_header, decode_dns_question, decode_dns_answer
 
 
-def forward_single_query(resolver_socket, resolver_addr, query_id, question):
+def forward_single_query(resolver_socket, resolver_addr, query_id, op_code, rd, rcode, question):
     # Create a new DNS query with single question
     header = DNSMessegeHeader(
-        query_id, 0, 0, 0, 0, 1, 0, 0, 0, 
+        query_id, 0, op_code, 0, 0, rd, 0, 0, rcode, 
         1,  # QDCOUNT = 1
         0, 0, 0
     ).get_header()
@@ -45,7 +45,7 @@ def main(resolver=":"):
             # Decode questions
             questions = decode_dns_question(buf, QDCOUNT)
             print(questions)
-            
+
             # Prepare response components
             response_questions = b''
             response_answers = b''
@@ -56,7 +56,7 @@ def main(resolver=":"):
                 response_questions += question
                 
                 # Forward single question to resolver
-                single_response = forward_single_query(resolver_socket, resolver_addr, ID, question)
+                single_response = forward_single_query(resolver_socket, resolver_addr, ID, OPCODE, RD, RCODE, question)
             
                 # Extract answer from resolver response
                 answer_start = 12 + len(question)  # Skip header and question
