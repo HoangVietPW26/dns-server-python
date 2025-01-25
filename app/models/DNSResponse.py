@@ -57,7 +57,7 @@ def decode_dns_question(question, num_of_question=1, start=12):
 
     while num_of_question > 0:
         while question[i] != 0:
-            print(question[i], i)
+            # print(question[i], i)
             if question[i] >= 192:
                 offset = int.from_bytes(question[i:i+2], 'big') - 49152
                 name.append(decode_compress(question, offset))

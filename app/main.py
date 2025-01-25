@@ -80,6 +80,9 @@ def main(resolver=":"):
                 response_answers
             ).get_response()
 
+            print("JJJJ")
+            print(response)
+
             udp_socket.sendto(response, source)
 
         except Exception as e:
