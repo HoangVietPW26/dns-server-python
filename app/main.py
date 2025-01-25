@@ -26,7 +26,7 @@ def main():
                 question = DNSMessegeQuestion(name, qtype, qclass).get_question()
                 questions += question
                 answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
-                answer += answer
+                answers += answer
             print(questions)
             print(answer)
             
