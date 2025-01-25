@@ -14,17 +14,17 @@ def main():
             buf, source = udp_socket.recvfrom(512)
             (ID, _QR, OPCODE, AA, TC, RD, RA, Z, RCODE, _QDCOUNT, _ANCOUNT, NSCOUNT, ARCOUNT) = decode_dns_header(buf[:12])
             header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, 1, 1, NSCOUNT, ARCOUNT).get_header()
+            print(header)
             
             (name, _qtype, _qclass, start) = decode_dns_question(buf[12:])
             question = DNSMessegeQuestion(name, 1, 1).get_question()
+            print(question)
 
             (name, _type, _class, _ttl, _rdlength, _rdata) = decode_dns_answer(buf[start:])
             answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
+            print(answer)
             
 
-            print(header)
-            print(question)
-            print(answer)
             response = DNSResponseMessage(header, question, answer).get_response()
             udp_socket.sendto(response, source)
 
