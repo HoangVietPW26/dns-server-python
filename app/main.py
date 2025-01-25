@@ -63,7 +63,7 @@ def main(resolver=":"):
             
                 # Extract answer from resolver response
                 answer_start = 12 + len(question)  # Skip header and question
-                answer = single_response[answer_start:answer_start + 16]  # Assuming fixed size A record answer
+                answer = single_response[answer_start:]  # Assuming fixed size A record answer
                 response_answers += answer
             
             # Create response header
