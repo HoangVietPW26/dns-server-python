@@ -12,7 +12,7 @@ from app.utils.utils import forward_single_query
 def main(resolver=":"):
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
-
+    print(resolver)
     # Uncomment this block to pass the first stage
     
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
