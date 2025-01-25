@@ -20,7 +20,8 @@ def main():
             question = DNSMessegeQuestion(name, 1, 1).get_question()
             print(question)
 
-            (name, _type, _class, _ttl, _rdlength, _rdata) = decode_dns_answer(buf[start:])
+            # print(buf[start:])
+            (name, _type, _class, _ttl, _rdlength, _rdata) = decode_dns_answer(buf[12:], start)
             answer = DNSMessegeAnswer(name, 1, 1, 60, 4, "8.8.8.8").get_answer()
             print(answer)
             
