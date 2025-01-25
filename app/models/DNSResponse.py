@@ -24,11 +24,12 @@ class DNSMessegeQuestion():
         self.qclass = QCLASS.to_bytes(2, 'big')
     
     def get_name(self, NAME):
-        names = NAME.split(b'.')
+        names = NAME.split('.')
         for i in range(len(names)):
-            names[i] = len(names[i]).to_bytes(1, 'big') + names[i]
+            names[i] = len(names[i]).to_bytes(1, 'big') + names[i].encode("utf-8")
         self.name = b''.join(names) + b'\x00'
         return self.name
+
     
     def get_question(self):
         return self.name + self.qtype + self.qclass
@@ -40,14 +41,19 @@ class DNSMessegeAnswer():
         self.class_ = CLASS.to_bytes(2, 'big')
         self.ttl = TTL.to_bytes(4, 'big')
         self.rdlength = RDLENGTH.to_bytes(2, 'big')
-        self.rdata = RDATA.to_bytes(4, 'big')
+        self.rdata = self.get_ip(RDATA)
     
     def get_name(self, NAME):
-        names = NAME.split(b'.')
+        names = NAME.split('.')
         for i in range(len(names)):
-            names[i] = len(names[i]).to_bytes(1, 'big') + names[i]
+            names[i] = len(names[i]).to_bytes(1, 'big') + names[i].encode("utf-8")
         self.name = b''.join(names) + b'\x00'
         return self.name
+    
+    def get_ip(self, IP):
+        ip_bytes = bytes(map(int, IP.split('.')))
+        print(ip_bytes)  # b'\xc0\xa8\x01\x01'
+        return ip_bytes
     
     def get_answer(self):
         return self.name + self.type + self.class_ + self.ttl + self.rdlength + self.rdata
