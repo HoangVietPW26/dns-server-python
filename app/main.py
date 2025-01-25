@@ -18,7 +18,7 @@ def main():
             header = DNSMessegeHeader(ID, 1, OPCODE, AA, TC, RD, RA, Z, RCODE, QDCOUNT, QDCOUNT, NSCOUNT, ARCOUNT).get_header()
             print(header)
             
-            names = decode_dns_question(buf)
+            names = decode_dns_question(buf, QDCOUNT)
             print(names)
             questions = b''
             for (name, qtype, qclass) in names:
