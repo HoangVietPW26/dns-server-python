@@ -53,10 +53,14 @@ class DNSMessegeQuestion():
 def decode_dns_question(question, start=0):
     name = []
     i = start
+    print("****")
+    print(question[i])
     while question[i] != 0:
+        print(question[i])
         length = question[i]
         name.append(question[i+1:i+1+length].decode("utf-8"))
         i += length + 1
+    print("****")
     qtype = int.from_bytes(question[i+1:i+3], 'big')
     qclass = int.from_bytes(question[i+3:i+5], 'big')
     return '.'.join(name)
