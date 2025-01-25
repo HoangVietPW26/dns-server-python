@@ -54,9 +54,10 @@ def decode_dns_question(question, num_of_question=1, start=12):
     names = []
     name = []
     i = start
-    # print("****")
+    print("****")
     while num_of_question > 0:
         while question[i] != 0:
+            print(question[i])
             if question[i] >= 192:
                 print("jjjj")
                 offset = int.from_bytes(question[i:i+2], 'big') - 49152
@@ -66,15 +67,13 @@ def decode_dns_question(question, num_of_question=1, start=12):
             length = question[i]
             name.append(question[i+1:i+1+length].decode("utf-8"))
             i += length + 1
-        print("****")
-        print(name)
         qtype = int.from_bytes(question[i+1:i+3], 'big')
         qclass = int.from_bytes(question[i+3:i+5], 'big')
         names.append(('.'.join(name), qtype, qclass))
         name = []
         i += 5
-        print(question[i]!=0 if i < len(question) else "end")
         num_of_question -= 1
+    print("*****")
     return names
 
 def decode_compress(question, offset):
