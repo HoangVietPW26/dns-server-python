@@ -50,20 +50,38 @@ class DNSMessegeQuestion():
     def get_question(self):
         return self.name + self.qtype + self.qclass
 
-def decode_dns_question(question, start=0):
+def decode_dns_question(question, num_of_question=1, start=12):
+    names = []
     name = []
     i = start
-    print("****")
-    print(question[i])
+    # print("****")
+    while num_of_question > 0:
+        while question[i] != 0:
+            if question[i] >= 192:
+                offset = int.from_bytes(question[i:i+2], 'big') - 49152
+                name.append(decode_compress(question, offset))
+                i += 2
+                continue
+            length = question[i]
+            name.append(question[i+1:i+1+length].decode("utf-8"))
+            i += length + 1
+        # print("****")
+        qtype = int.from_bytes(question[i+1:i+3], 'big')
+        qclass = int.from_bytes(question[i+3:i+5], 'big')
+        names.append(('.'.join(name), qtype, qclass))
+        i += 5
+        num_of_question -= 1
+    return names
+
+def decode_compress(question, offset):
+    name = []
+    i = offset
     while question[i] != 0:
-        print(question[i])
         length = question[i]
         name.append(question[i+1:i+1+length].decode("utf-8"))
         i += length + 1
-    print("****")
-    qtype = int.from_bytes(question[i+1:i+3], 'big')
-    qclass = int.from_bytes(question[i+3:i+5], 'big')
     return '.'.join(name)
+
     
 class DNSMessegeAnswer():
     def __init__(self, NAME="codecrafters.io", TYPE=1, CLASS=1, TTL=60, RDLENGTH=4, RDATA="8.8.8.8"):
